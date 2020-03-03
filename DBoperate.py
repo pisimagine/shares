@@ -107,3 +107,8 @@ class DB:
 		else:
 			return True
 
+	def close():
+		conn = self.conn
+		conn.close
+
+	

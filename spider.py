@@ -2,8 +2,9 @@ import requests
 import public
 import json
 import time
+import re
 
-class CNINF:
+class CNINF:			#垃圾、浪费表情。信息更新不及时。。。
 	def __init__(self):
 		self.s = requests.session()
 	
@@ -20,15 +21,24 @@ class CNINF:
 		financialDataUrl = 'http://www.cninfo.com.cn/data/yellowpages/singleStockData?scode=' + shareCode +'&mergerMark=financeData'
 		#返回股票的财务报表：平衡表、利润表、现金流
 		data = self.Get_Data(financialDataUrl)
+		data = json.loads(data)
+		financialData = []
+		for tableName in data:				#tableName:assetsData、cashFlowData、profitsData
+			for record in data[tableName]: 		#list[0、1、2、3、4....
+				for columnName in record:		#2008、2009、2010、		
+					print("飞起")
 		return data
+		
 	def GetDividendData(self,shareCode):
 		dividendUrl = 'http://www.cninfo.com.cn/data/yellowpages/singleStockData?scode=' + shareCode + '&mergerMark=shareData'
 		data = self.Get_Data(dividendUrl)
 		return data
+		
 	def GetHolderData(self,shareCode):
 		holderUrl = 'http://www.cninfo.com.cn/data/yellowpages/singleStockData?scode=' + shareCode + '&mergerMark=shareHoldersData'
 		data = self.Get_Data(holderUrl)
 		return data
+		
 	def GetBasicInfData(self,shareCode):
 		bsInfUrl = 'http://www.cninfo.com.cn/data/yellowpages/getIndexData?scode=' + shareCode
 		data = self.Get_Data(bsInfUrl)
@@ -83,21 +93,59 @@ class CNINF:
 			basicInf['MARKET'] = replace(data["snapshot5015Data"][0]['F012V']," ","")	#所属市场
 		print("=="*60)
 		return basicInf
+	
 	def Get_Data(self,url):
 		s = self.s
 		data = s.get(url)
 		time.sleep(1)
 		return data.text
 
+class EastMoney:
+	def __init__(self):
+		self.session = requests.session()
+	
+	def GetFinancialData(self,shareCode):
+		financeUrl = 'http://f10.eastmoney.com/f10_v2/FinanceAnalysis.aspx?code=' + shareCode		#此处为个股详情的url
+		pageSrc = self.GetSource(financeUrl)	
+		if(pageSrc == False):
+			return False
+		companyType = re.search(r'id="hidctype".*?value="(4)"',pageSrc,re.S)
+		if(companyType != None):
+			companyType = companyType.group(1)
+		else:
+			public.writeLog("正则匹配时未找到" + shareCode + "的公司类型")
+			return False
+		url = 'http://f10.eastmoney.com/NewFinanceAnalysis/zcfzbAjax?companyType='+ companyType + '&reportDateType=0&reportType=1&endDate=&code=' +shareCode
+		data = self.GetSource(url)
+		if(data == False):
+			return False
+		data = json.loads(data)
+		data = json.loads(data)		#需要两次json解析才能得到list
+		for balance in data:
+			print("=="*60)
+			for key in balance:
+				print(key+ ": "+ balance[key])
+				print("- - "*30)
+		
+	
+	def GetSource(self,url):
+		session = self.session
+		try:
+			pageSrc = session.get(url,timeout = 5)
+		except Exception as e:
+			public.writeLog('在请求"'+url+'"时出错：' + str(e))
+			return False
+		else:
+			return pageSrc.text
+
 def test():
-	c = CNINF()
+	em = EastMoney()
 	# data = c.BasicInfUrl('300339')
 	# for key in data:
 		# print("=="*60)
 		# print(key + "： " + data[key])
-	data = c.GetShareList()
-	print(data)
+	em.GetFinancialData('SZ300822')
 		
     
-#test()
+test()
 
