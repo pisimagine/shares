@@ -13,10 +13,12 @@ class DB:
 		cursor = self.cursor
 		dbName = "share"
 		basicInf = "basicInf (ID int primary key auto_increment,UPDATE_TIME DATETIME not null,SHARE_CODE VarChar(45))"		#保存公司概况等基本信息
+		balance = "balance (ID int primary key auto_increment,UPDATE_TIME DATETIME not null,SHARE_CODE VarChar(45))"	#保存资产负债表
 		try:
 			cursor.execute("create database if not exists %s;" % dbName)		#注意，mysql中【数据库名】和【表名】不能加''，故此处dbName不能作为cursor.execute的参数传入
 			cursor.execute("use %s;" % dbName)			#选中债券信息数据表
 			cursor.execute("create table if not exists %s;" % basicInf)
+			cursor.execute("create table if not exists %s;" % balance)
 		except Exception as err:
 			conn.rollback
 			public.writeLog(str(err))
@@ -40,20 +42,23 @@ class DB:
 			public.writeLog("值错误:向" + tableName + "插入记录做比较时失败,Insert_Record(record,tableName)中record需传入dict变量")
 			return False
 			
-		sqlColumns = "(UPDATE_TIME,"
-		sqlValues = "(CURRENT_TIMESTAMP,"
+		sqlColumns = []
+		sqlValues = []
+		columnHolder = []
+		valueHolder = []
 		for key in record.keys():
 			if(record[key] == None):		#对nonetype进行预处理
 				record[key] = ""
-			sqlColumns = sqlColumns + key + ","
-			sqlValues = sqlValues + "\"" + record[key] + "\","
-		sqlColumns = sqlColumns + "))"
-		sqlColumns = sqlColumns.replace(",))",")")
-		sqlValues = sqlValues + "))"
-		sqlValues = sqlValues.replace(",))",")")
-		sql = "insert into %s %s VALUES %s;" % (tableName,sqlColumns,sqlValues)
+			sqlColumns = sqlColumns + [key.strip()]
+			sqlValues = sqlValues + [record[key]]
+			columnHolder = columnHolder + ["{}"]
+			valueHolder = valueHolder + ["%s"]
+		columnHolder = ",".join(columnHolder)
+		valueHolder = ",".join(valueHolder)
+		sql = "insert into {} ( UPDATE_TIME,{} ) values ( CURRENT_TIMESTAMP,{} );".format(tableName,columnHolder,valueHolder)
+		sql = sql.format(*sqlColumns)
 		try:
-			cursor.execute(sql)	
+			cursor.execute(sql,sqlValues)	
 			conn.commit()
 		except Exception as err:
 			conn.rollback()
@@ -107,7 +112,7 @@ class DB:
 		else:
 			return True
 
-	def close():
+	def close(self):
 		conn = self.conn
 		conn.close
 

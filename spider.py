@@ -104,8 +104,13 @@ class EastMoney:
 	def __init__(self):
 		self.session = requests.session()
 	
-	def GetFinancialData(self,shareCode):
+	def GetBalance(self,shareCode):		#获得资产负债表
+		'''
+			#传入参数	：	股票代码，格式为SHXXXXXX或SZXXXXXX
+			#返回值	：	列表，列表元素为字典
+		'''
 		financeUrl = 'http://f10.eastmoney.com/f10_v2/FinanceAnalysis.aspx?code=' + shareCode		#此处为个股详情的url
+		print(financeUrl)
 		pageSrc = self.GetSource(financeUrl)	
 		if(pageSrc == False):
 			return False
@@ -121,11 +126,17 @@ class EastMoney:
 			return False
 		data = json.loads(data)
 		data = json.loads(data)		#需要两次json解析才能得到list
+		'''
+		数据说明：data为列表，列表内有多个元素，每个元素均为字典，字典内：
+			#SUMLASSET -->流动资产合计；SUMNONLASSET-->固定资产合计；SUMASSET-->资产合计；
+			#SUMLLIAB-->流动负债合计；SUMNONLLIAB-->非流动负债合计；SUMLIAB-->负债合计；
+			#SUMSHEQUITY-->股东权益合计
+		'''
+		abbrList = []
 		for balance in data:
-			print("=="*60)
-			for key in balance:
-				print(key+ ": "+ balance[key])
-				print("- - "*30)
+			abbrList = abbrList + [{'SUMLASSET':balance["SUMLASSET"],"SUMNONLASSET":balance["SUMNONLASSET"],"SUMASSET":balance["SUMASSET"]}]
+		
+		return abbrList
 		
 	
 	def GetSource(self,url):
@@ -144,8 +155,8 @@ def test():
 	# for key in data:
 		# print("=="*60)
 		# print(key + "： " + data[key])
-	em.GetFinancialData('SZ300822')
+	em.GetBalance('SZ300822')
 		
     
-test()
+#test()
 

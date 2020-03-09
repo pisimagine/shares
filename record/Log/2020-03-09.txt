@@ -1,0 +1,56 @@
+20:47:52 >> 'SHARE_CODE'
+20:53:12 >> 'SHARE_CODE'
+20:55:25 >> 'SHARE_CODE'
+20:56:49 >> 'SHARE_CODE'
+20:59:13 >> 'SHARE_CODE'
+21:00:23 >> 'SHARE_CODE'
+21:02:07 >> 'SHARE_CODE'
+21:03:26 >> 'SHARE_CODE'
+21:06:16 >> 'SHARE_CODE'
+21:11:31 >> 'SHARE_CODE'
+21:18:13 >> 'SHARE_CODE'
+21:18:54 >> 'SHARE_CODE'
+21:19:47 >> 'SHARE_CODE'
+21:20:22 >> 'SHARE_CODE'
+21:41:36 >> 'SHARE_CODE'
+21:43:42 >> 'SHARE_CODE'
+21:45:31 >> 'SHARE_CODE'
+21:46:13 >> 'SHARE_CODE'
+21:46:57 >> 'SHARE_CODE'
+21:47:26 >> 'SHARE_CODE'
+21:48:53 >> 'SHARE_CODE'
+21:56:43 >> 'SHARE_CODE'
+21:57:34 >> 'SHARE_CODE'
+21:57:57 >> 'SHARE_CODE'
+21:58:42 >> 'SHARE_CODE'
+22:00:19 >> 'SHARE_CODE'
+22:02:05 >> 'SHARE_CODE'
+22:02:05 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:02:05 >> 'SHARE_CODE'
+22:02:05 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:02:05 >> 'SHARE_CODE'
+22:02:05 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:02:05 >> 'SHARE_CODE'
+22:02:05 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:02:05 >> 'SHARE_CODE'
+22:02:05 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:03:25 >> 'SHARE_CODE'
+22:03:25 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:03:25 >> 'SHARE_CODE'
+22:03:25 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:03:25 >> 'SHARE_CODE'
+22:03:25 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:03:25 >> 'SHARE_CODE'
+22:03:25 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:03:25 >> 'SHARE_CODE'
+22:03:25 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:04:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:04:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:04:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:04:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:04:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:05:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:05:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:05:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:05:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
+22:05:23 >> 发生错误：(1292, "Incorrect datetime value: 'CURRENT_TIMESTAMP' for column 'UPDATE_TIME' at row 1")
