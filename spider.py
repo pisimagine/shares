@@ -104,23 +104,26 @@ class EastMoney:
 	def __init__(self):
 		self.session = requests.session()
 	
-	def GetBalance(self,shareCode):		#获得资产负债表
+	def GetFinancialData(self,shareCode):
+		companyType = self.GetCompanyType(shareCode)
+		if(companyType == False):
+			return False
+		data = {}
+		profitData = self.GetProfit(shareCode,companyType)
+		data['profit'] = profitData		#获取利润表
+		balanceData = self.GetBalance(shareCode,companyType)
+		data["balance"] = balanceData
+		cashFlowData = self.GetCashFlowData(shareCode,companyType)
+		data["cashflow"] = cashFlowData
+		return data
+	
+	def GetBalance(self,shareCode,companyType):		#获得资产负债表
 		'''
-			#传入参数	：	股票代码，格式为SHXXXXXX或SZXXXXXX
+			#传入参数	：	股票代码，格式为SHXXXXXX或SZXXXXXX ; conpanyType,由self.GetCompanyType()函数获取
 			#返回值	：	列表，列表元素为字典
 		'''
-		financeUrl = 'http://f10.eastmoney.com/f10_v2/FinanceAnalysis.aspx?code=' + shareCode		#此处为个股详情的url
-		print(financeUrl)
-		pageSrc = self.GetSource(financeUrl)	
-		if(pageSrc == False):
-			return False
-		companyType = re.search(r'id="hidctype".*?value="(4)"',pageSrc,re.S)
-		if(companyType != None):
-			companyType = companyType.group(1)
-		else:
-			public.writeLog("正则匹配时未找到" + shareCode + "的公司类型")
-			return False
 		url = 'http://f10.eastmoney.com/NewFinanceAnalysis/zcfzbAjax?companyType='+ companyType + '&reportDateType=0&reportType=1&endDate=&code=' +shareCode
+			#参数含义：reportDateType=0&reportType=1 --> 按报告期；
 		data = self.GetSource(url)
 		if(data == False):
 			return False
@@ -132,12 +135,46 @@ class EastMoney:
 			#SUMLLIAB-->流动负债合计；SUMNONLLIAB-->非流动负债合计；SUMLIAB-->负债合计；
 			#SUMSHEQUITY-->股东权益合计
 		'''
-		abbrList = []
-		for balance in data:
-			abbrList = abbrList + [{'SUMLASSET':balance["SUMLASSET"],"SUMNONLASSET":balance["SUMNONLASSET"],"SUMASSET":balance["SUMASSET"]}]
-		
-		return abbrList
-		
+		return data
+	def GetProfit(self,shareCode,companyType):
+		'''
+			#传入参数	：	股票代码，格式为SHXXXXXX或SZXXXXXX ; conpanyType,由self.GetCompanyType()函数获取
+			#返回值	：	列表，列表元素为字典
+		'''
+		url = 'http://f10.eastmoney.com/NewFinanceAnalysis/lrbAjax?companyType='+ companyType +'&reportDateType=0&reportType=1&endDate=&code=' +shareCode
+		data = self.GetSource(url)
+		if(data == False):
+			return False
+		data = json.loads(data)
+		data = json.loads(data)		#需要两次json解析才能得到list
+		return data
+	
+	def GetCashFlowData(self,shareCode,companyType):
+		'''
+			#传入参数	：	股票代码，格式为SHXXXXXX或SZXXXXXX ; conpanyType,由self.GetCompanyType()函数获取
+			#返回值	：	列表，列表元素为字典
+		'''
+		url = 'http://f10.eastmoney.com/NewFinanceAnalysis/xjllbAjax?companyType='+ companyType +'&reportDateType=0&reportType=1&endDate=&code='+shareCode
+		data = self.GetSource(url)
+		if(data == False):
+			return False
+		data = json.loads(data)
+		data = json.loads(data)		#需要两次json解析才能得到list
+		return data
+	
+	def GetCompanyType(self,shareCode):
+		financeUrl = 'http://f10.eastmoney.com/f10_v2/FinanceAnalysis.aspx?code=' + shareCode		#此处为个股详情的url
+		print(financeUrl)
+		pageSrc = self.GetSource(financeUrl)	
+		if(pageSrc == False):
+			return False
+		companyType = re.search(r'id="hidctype".*?value="(4)"',pageSrc,re.S)
+		if(companyType != None):
+			companyType = companyType.group(1)
+			return companyType
+		else:
+			public.writeLog("正则匹配时未找到" + shareCode + "的公司类型")
+			return False
 	
 	def GetSource(self,url):
 		session = self.session

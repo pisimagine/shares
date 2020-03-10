@@ -9,7 +9,7 @@ from DBoperate import DB
 em = EastMoney()
 db = DB()
 db.Initialize_Share()
-results = em.GetBalance('SZ300822')
-for result in results:
-	db.Insert_Record(result,'balance')
-db.close()
+results = em.GetFinancialData('SZ300822')
+for key in results:
+	for record in results[key]:
+		db.Insert_Record(record,key)

@@ -14,11 +14,15 @@ class DB:
 		dbName = "share"
 		basicInf = "basicInf (ID int primary key auto_increment,UPDATE_TIME DATETIME not null,SHARE_CODE VarChar(45))"		#保存公司概况等基本信息
 		balance = "balance (ID int primary key auto_increment,UPDATE_TIME DATETIME not null,SHARE_CODE VarChar(45))"	#保存资产负债表
+		profit =  "profit (ID int primary key auto_increment,UPDATE_TIME DATETIME not null,SHARE_CODE VarChar(45))"	#保存利润表
+		cashFlow =  "cashflow (ID int primary key auto_increment,UPDATE_TIME DATETIME not null,SHARE_CODE VarChar(45))"	#保存现金流表
 		try:
 			cursor.execute("create database if not exists %s;" % dbName)		#注意，mysql中【数据库名】和【表名】不能加''，故此处dbName不能作为cursor.execute的参数传入
 			cursor.execute("use %s;" % dbName)			#选中债券信息数据表
 			cursor.execute("create table if not exists %s;" % basicInf)
 			cursor.execute("create table if not exists %s;" % balance)
+			cursor.execute("create table if not exists %s;" % profit)
+			cursor.execute("create table if not exists %s;" % cashFlow)
 		except Exception as err:
 			conn.rollback
 			public.writeLog(str(err))
